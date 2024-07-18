@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오른쪽 방향을 향하여 슬라이드</title>
+
+    <style>
+        *{margin:0; padding:0; box-sizing: border-box;}
+        #layout {max-width:900px; margin:auto; border:5px solid red; overflow: hidden; }
+        #slide {display:flex; width:300%; position:relative; left:-200%;}
+        /* position:relative; 가 움직이는 역할을 함. */
+        #slide div {border:1px solid blue; height: 300px; background-color: aquamarine; width:100%; font-size:10rem; text-align: center;}
+    </style>
+</head>
+<body>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            //setTimeout( () =>{ alert('하이');}, 1200);
+            /* setTimeout(함수, 지체시간); 지체시간 이후에 함수가 실행 된다. */
+
+            //setInterval(() => {alert('하이');}, interval);
+            /* setInterval 은 로그인 해서 나갈때까지 계속 반복 된다 */
+
+            
+            const area = document.getElementById("slideArea");
+            const s1 = document.getElementById('slide');
+
+            let x1;
+            let x2;
+            let pos;
+            let zz;
+            let ss = false; // 슬라이드를 껐다는 의미를 심어둠 (우리맘대로)... (!ss) 와 같다.
+
+            //alert ('s1');
+
+            
+
+            const toRight = () => {
+
+              ss = true;
+              //형식은 " 지정요소.스타일.css속성명(transition) = '값'; " 의 형식으로 쓰인다.
+              s1.style.transition = 'left 1.5s';
+              s1.style.left = '-100%';
+
+              setTimeout( ()=> x(), 1500 );
+            
+              const x = () => {
+                s1.style.left = '-200%';
+                s1.style.transition = 'none';
+                s1.prepend(s1.lastElementChild);
+                //appendChild 는 오른쪽 끝에 다음 슬라이드가 추가되라는 의미
+                //prepend는 
+                ss = false; // 슬라이드 이동 종료
+              }
+            }
+
+            area.addEventListener("touchstart", e => {
+
+                //이중 터치 방지하려고 if 문 씀
+                if (ss==false) {
+                    x1 = e.touches[0].clientX;
+                
+                //(!ss) 는 ss가 false라면, 이라는 의미
+                //
+
+                area.addEventListener("touchend", zz = e => {
+
+                    x2 = e.changedTouches[0].clientX; // 슬라이드 하나 이동 중에는 터치를 잠깐 끈다.
+
+                        if(x1 < x2){
+                            toRight()};
+
+                        area.removeEventListener("touchend", zz ); // 이벤트 리스너 제거
+
+                    });
+                }
+            });
+            //setInterval (toRight , 2000);
+            //실행문 { toLeft();} 가 1개면 중괄호 새미콜론을 쓰지 않아도 된다.
+
+            //x = () => {alert ('하이');}
+          //x(함수) = ()(매개변수) { 내용 }
+
+        });
+    </script>
+
+<div id = "layout">
+    <section id="slideArea">
+        <h1>슬라이드 연습</h1>    
+            <div id='slide'> <!-- 여러가지 img위에 부모 div가 있어야함 -->
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+            </div>
+    </section>
+</div>
+</body>
+</html>
